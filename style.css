@@ -1,15 +1,15 @@
 body{
+    background:#111;
+    color:#fff;
+    font-family:Arial,sans-serif;
     margin:0;
     padding:0;
-    background:#0f0f0f;
-    color:white;
-    font-family:Arial,sans-serif;
 }
 
 header{
+    background:#1a1a1a;
     text-align:center;
     padding:20px;
-    background:#181818;
     border-bottom:2px solid gold;
 }
 
@@ -19,41 +19,31 @@ h1{
 
 .container{
     display:grid;
-    grid-template-columns:
-    repeat(auto-fit,minmax(280px,1fr));
-
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
     gap:15px;
-
-    padding:20px;
+    padding:15px;
 }
 
 .panel{
-    background:#1d1d1d;
-
-    border:1px solid #444;
-
+    background:#222;
+    border:1px solid #333;
     border-radius:10px;
-
     padding:15px;
+}
+
+h2{
+    color:#87ceeb;
 }
 
 button{
     width:100%;
-
-    margin-top:8px;
-
+    margin:5px 0;
     padding:10px;
-
     border:none;
-
     border-radius:5px;
-
     background:gold;
-
     color:black;
-
     font-weight:bold;
-
     cursor:pointer;
 }
 
@@ -63,8 +53,4 @@ button:hover{
 
 p{
     margin:6px 0;
-}
-
-h2{
-    color:#7ec8ff;
 }
