@@ -1,131 +1,158 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Cultivation Online Lite</title>
-    <style>
-        body{
-            background:#111;
-            color:white;
-            font-family:Arial;
-            text-align:center;
-            padding:20px;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cultivation Online</title>
 
-        .box{
-            background:#222;
-            padding:20px;
-            border-radius:10px;
-            width:500px;
-            margin:auto;
-        }
-
-        button{
-            padding:10px 20px;
-            margin:5px;
-            cursor:pointer;
-        }
-    </style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="box">
-    <h1>Cultivation Online Lite</h1>
+<header>
+    <h1>⚔ Cultivation Online ⚔</h1>
+</header>
 
-    <h2 id="realm">Mortal</h2>
+<div class="container">
 
-    <p>Qi: <span id="qi">0</span></p>
+    <div class="panel">
+        <h2>Character</h2>
 
-    <p>Qi per Second: <span id="qps">1</span></p>
+        <p>Name: <span id="playerName">Cultivator</span></p>
+        <p>Realm: <span id="realmName">Mortal</span></p>
+        <p>Level: <span id="level">1</span></p>
 
-    <button onclick="cultivate()">
-        Gather Qi
-    </button>
+        <p>Qi: <span id="qi">0</span></p>
+        <p>Spirit Stones: <span id="spiritStones">0</span></p>
 
-    <button onclick="breakthrough()">
-        Breakthrough
-    </button>
+        <p>Attack: <span id="attack">10</span></p>
+        <p>Defense: <span id="defense">5</span></p>
+        <p>HP: <span id="hp">100</span></p>
 
-    <button onclick="saveGame()">
-        Save
-    </button>
+        <button onclick="cultivate()">
+            Cultivate
+        </button>
+
+        <button onclick="breakthrough()">
+            Breakthrough
+        </button>
+    </div>
+
+    <div class="panel">
+        <h2>Equipment</h2>
+
+        <p>Weapon:
+            <span id="weaponSlot">None</span>
+        </p>
+
+        <p>Armor:
+            <span id="armorSlot">None</span>
+        </p>
+
+        <button onclick="findEquipment()">
+            Search Equipment
+        </button>
+    </div>
+
+    <div class="panel">
+        <h2>Sect</h2>
+
+        <p>
+            Current Sect:
+            <span id="sectName">None</span>
+        </p>
+
+        <button onclick="joinSect('Azure Dragon Sect')">
+            Azure Dragon Sect
+        </button>
+
+        <button onclick="joinSect('Heavenly Sword Sect')">
+            Heavenly Sword Sect
+        </button>
+    </div>
+
+    <div class="panel">
+        <h2>Alchemy</h2>
+
+        <button onclick="craftQiPill()">
+            Craft Qi Pill
+        </button>
+
+        <button onclick="useQiPill()">
+            Use Qi Pill
+        </button>
+
+        <p>
+            Pills:
+            <span id="pillCount">0</span>
+        </p>
+    </div>
+
+    <div class="panel">
+        <h2>Beast Companion</h2>
+
+        <p>
+            Companion:
+            <span id="beastName">None</span>
+        </p>
+
+        <button onclick="tameBeast()">
+            Tame Beast
+        </button>
+    </div>
+
+    <div class="panel">
+        <h2>Dungeons</h2>
+
+        <button onclick="runDungeon()">
+            Enter Dungeon
+        </button>
+
+        <p id="dungeonResult">
+            No dungeon attempted.
+        </p>
+    </div>
+
+    <div class="panel">
+        <h2>Daily Quest</h2>
+
+        <p>
+            Gather 500 Qi
+        </p>
+
+        <button onclick="claimQuest()">
+            Claim Reward
+        </button>
+    </div>
+
+    <div class="panel">
+        <h2>Ascension</h2>
+
+        <p>
+            Rebirths:
+            <span id="rebirths">0</span>
+        </p>
+
+        <button onclick="ascend()">
+            Ascend
+        </button>
+    </div>
+
+    <div class="panel">
+        <h2>Save</h2>
+
+        <button onclick="saveGame()">
+            Save
+        </button>
+
+        <button onclick="loadGame()">
+            Load
+        </button>
+    </div>
+
 </div>
 
-<script>
-let game = {
-    qi: 0,
-    qps: 1,
-    realm: 0
-};
-
-const realms = [
-    "Mortal",
-    "Qi Refinement",
-    "Foundation Establishment",
-    "Core Formation",
-    "Nascent Soul",
-    "Spirit Severing",
-    "Immortal"
-];
-
-function cultivate(){
-    game.qi += game.qps;
-    updateUI();
-}
-
-function breakthrough(){
-    let cost = (game.realm + 1) * 100;
-
-    if(game.qi >= cost){
-        game.qi -= cost;
-        game.realm++;
-        game.qps += 2;
-
-        if(game.realm >= realms.length){
-            game.realm = realms.length - 1;
-        }
-
-        updateUI();
-    }else{
-        alert("Not enough Qi!");
-    }
-}
-
-function updateUI(){
-    document.getElementById("qi").innerText =
-        Math.floor(game.qi);
-
-    document.getElementById("qps").innerText =
-        game.qps;
-
-    document.getElementById("realm").innerText =
-        realms[game.realm];
-}
-
-setInterval(() => {
-    game.qi += game.qps;
-    updateUI();
-},1000);
-
-function saveGame(){
-    localStorage.setItem(
-        "cultivationSave",
-        JSON.stringify(game)
-    );
-}
-
-function loadGame(){
-    let save =
-        localStorage.getItem("cultivationSave");
-
-    if(save){
-        game = JSON.parse(save);
-    }
-
-    updateUI();
-}
-
-loadGame();
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
