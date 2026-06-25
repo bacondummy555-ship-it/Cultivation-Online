@@ -1,425 +1,417 @@
+// =========================
+// CULTIVATION ONLINE RPG
+// PART 1 - CORE ENGINE
+// =========================
+
 const realms = [
-"Mortal",
-"Body Tempering",
-"Qi Gathering",
-"Qi Condensation",
-"Foundation Establishment",
-"Golden Core",
-"Nascent Soul",
-"Spirit Severing",
-"Dao Transformation",
-"Ascendant",
-"Earth Immortal",
-"Heaven Immortal",
-"Mystic Immortal",
-"Immortal King",
-"Immortal Emperor",
-"Divine Lord",
-"Celestial Monarch",
-"Ancient Sovereign",
-"Eternal Sovereign",
-"True Dao"
+    "Mortal",
+    "Body Tempering",
+    "Qi Gathering",
+    "Qi Condensation",
+    "Foundation Establishment",
+    "Golden Core",
+    "Nascent Soul",
+    "Spirit Severing",
+    "Dao Transformation",
+    "Ascendant",
+    "Earth Immortal",
+    "Heaven Immortal",
+    "Mystic Immortal",
+    "Immortal King",
+    "Immortal Emperor",
+    "Divine Lord",
+    "Celestial Monarch",
+    "Ancient Sovereign",
+    "Eternal Sovereign",
+    "True Dao"
 ];
 
 let player = {
-realm:0,
-level:1,
 
-qi:0,
-spiritStones:0,
+    level: 1,
 
-attack:10,
-defense:5,
-hp:100,
+    realm: 0,
 
-pills:0,
-rebirths:0,
+    qi: 0,
 
-inventory:[]
+    spiritStones: 0,
+
+    attack: 10,
+
+    defense: 5,
+
+    hp: 100,
+
+    pills: 0,
+
+    rebirths: 0,
+
+    weapon: null,
+
+    armor: null,
+
+    beast: null,
+
+    location: "Mortal Village",
+
+    inventory: [],
+
+    achievements: []
+
 };
 
-const enemies = [
-{
-name:"Bandit",
-power:50,
-reward:25
-},
-{
-name:"Spirit Wolf",
-power:100,
-reward:50
-},
-{
-name:"Demonic Cultivator",
-power:250,
-reward:100
-},
-{
-name:"Ancient Guardian",
-power:500,
-reward:250
-},
-{
-name:"Dragon King",
-power:1000,
-reward:1000
+// =========================
+// LOG SYSTEM
+// =========================
+
+function log(message){
+
+    const logBox =
+    document.getElementById(
+        "combatLog"
+    );
+
+    if(!logBox) return;
+
+    logBox.innerHTML =
+        message +
+        "<br>" +
+        logBox.innerHTML;
 }
-];
 
-function updateUI(){
+// =========================
+// BREAKTHROUGH COST
+// =========================
 
-document.getElementById("realmName").textContent =
-realms[player.realm];
+function breakthroughCost(){
 
-document.getElementById("level").textContent =
-player.level;
+    return Math.floor(
+        100 *
+        Math.pow(
+            1.8,
+            player.realm
+        )
+    );
 
-document.getElementById("qi").textContent =
-Math.floor(player.qi);
-
-document.getElementById("spiritStones").textContent =
-player.spiritStones;
-
-document.getElementById("attack").textContent =
-player.attack;
-
-document.getElementById("defense").textContent =
-player.defense;
-
-document.getElementById("hp").textContent =
-player.hp;
 }
+
+// =========================
+// CULTIVATION
+// =========================
 
 function cultivate(){
 
-let gain =
-10 +
-(player.realm * 5) +
-(player.rebirths * 25);
+    let gain =
+        10 +
+        (player.realm * 5) +
+        (player.rebirths * 25);
 
-player.qi += gain;
+    player.qi += gain;
 
-updateUI();
+    log(
+        "+" +
+        gain +
+        " Qi"
+    );
+
+    updateUI();
+
 }
+
+// =========================
+// BREAKTHROUGH
+// =========================
 
 function breakthrough(){
 
-let cost =
-Math.floor(
-100 *
-Math.pow(
-1.8,
-player.realm
-)
-);
+    if(
+        player.realm >=
+        realms.length - 1
+    ){
 
-if(
-player.realm >= realms.length - 1
-){
-alert("Maximum Realm Reached");
-return;
-}
+        alert(
+            "Maximum Realm Reached"
+        );
 
-if(player.qi >= cost){
+        return;
+    }
 
-player.qi -= cost;
+    let cost =
+    breakthroughCost();
 
-player.realm++;
+    if(
+        player.qi >= cost
+    ){
 
-player.level++;
+        player.qi -= cost;
 
-player.attack += 10;
-player.defense += 5;
-player.hp += 25;
+        player.realm++;
 
-alert(
-"Breakthrough to " +
-realms[player.realm]
-);
+        player.level++;
 
-}else{
+        player.attack += 10;
 
-alert(
-"Need " +
-cost +
-" Qi"
-);
+        player.defense += 5;
 
-}
+        player.hp += 25;
 
-updateUI();
-}
+        log(
+            "Breakthrough: " +
+            realms[player.realm]
+        );
 
-function findEquipment(){
+    }
+    else{
 
-const rewards = [
-"Iron Sword",
-"Spirit Blade",
-"Heaven Sword",
-"Immortal Sword",
-"Spirit Armor",
-"Golden Armor"
-];
+        alert(
+            "Need " +
+            cost +
+            " Qi"
+        );
 
-let item =
-rewards[
-Math.floor(
-Math.random() *
-rewards.length
-)
-];
+    }
 
-player.inventory.push(item);
-
-player.attack += 10;
-player.defense += 10;
-
-alert(
-"Found " + item
-);
-
-updateUI();
-}
-
-function tameBeast(){
-
-const beasts = [
-"Spirit Wolf",
-"Azure Tiger",
-"Flame Phoenix",
-"Ancient Dragon"
-];
-
-let beast =
-beasts[
-Math.floor(
-Math.random() *
-beasts.length
-)
-];
-
-player.inventory.push(
-"Companion: " + beast
-);
-
-player.attack += 50;
-
-alert(
-"Tamed " + beast
-);
-
-updateUI();
-}
-
-function runDungeon(){
-
-let enemy =
-enemies[
-Math.floor(
-Math.random() *
-enemies.length
-)
-];
-
-let playerPower =
-player.attack +
-player.defense +
-player.hp +
-(player.realm * 50);
-
-if(
-playerPower >
-enemy.power
-){
-
-player.spiritStones +=
-enemy.reward;
-
-player.inventory.push(
-enemy.name +
-" Loot"
-);
-
-document.getElementById(
-"dungeonResult"
-).textContent =
-"Victory against " +
-enemy.name +
-" +" +
-enemy.reward +
-" Stones";
-
-}else{
-
-document.getElementById(
-"dungeonResult"
-).textContent =
-"Defeated by " +
-enemy.name;
+    updateUI();
 
 }
 
-updateUI();
-}
+// =========================
+// AUTO CULTIVATION
+// =========================
 
-function craftQiPill(){
+setInterval(()=>{
 
-if(
-player.spiritStones < 50
-){
+    let gain =
+        2 +
+        player.realm +
+        player.rebirths;
 
-alert(
-"Need 50 Spirit Stones"
-);
+    player.qi += gain;
 
-return;
-}
+    updateUI();
 
-player.spiritStones -= 50;
+},1000);
 
-player.pills++;
-
-alert(
-"Qi Pill Crafted"
-);
-
-updateUI();
-}
-
-function useQiPill(){
-
-if(player.pills <= 0){
-
-alert(
-"No Pills"
-);
-
-return;
-}
-
-player.pills--;
-
-player.qi += 500;
-
-alert(
-"Used Qi Pill"
-);
-
-updateUI();
-}
-
-function claimQuest(){
-
-if(player.qi < 500){
-
-alert(
-"Need 500 Qi"
-);
-
-return;
-}
-
-player.spiritStones += 200;
-
-alert(
-"Quest Complete!"
-);
-
-updateUI();
-}
+// =========================
+// ASCENSION
+// =========================
 
 function ascend(){
 
-if(
-player.realm <
-realms.length - 1
-){
+    if(
+        player.realm <
+        realms.length - 1
+    ){
 
-alert(
-"Reach True Dao First"
-);
+        alert(
+            "Reach True Dao First"
+        );
 
-return;
+        return;
+    }
+
+    player.rebirths++;
+
+    player.realm = 0;
+
+    player.level = 1;
+
+    player.qi = 0;
+
+    player.attack += 100;
+
+    player.defense += 100;
+
+    player.hp += 500;
+
+    log(
+        "Ascension Successful!"
+    );
+
+    updateUI();
+
 }
 
-player.rebirths++;
+// =========================
+// DAILY QUEST
+// =========================
 
-player.realm = 0;
+function claimQuest(){
 
-player.level = 1;
+    if(
+        player.qi < 500
+    ){
 
-player.qi = 0;
+        alert(
+            "Need 500 Qi"
+        );
 
-player.attack += 100;
+        return;
+    }
 
-player.defense += 100;
+    player.spiritStones += 200;
 
-player.hp += 500;
+    log(
+        "Quest Reward +200 Stones"
+    );
 
-alert(
-"Ascension Successful!"
-);
+    updateUI();
 
-updateUI();
 }
 
-function showInventory(){
+// =========================
+// WORLD MAP
+// =========================
 
-if(
-player.inventory.length === 0
-){
+function travel(location){
 
-alert(
-"Inventory Empty"
-);
+    player.location =
+    location;
 
-return;
+    document.getElementById(
+        "location"
+    ).textContent =
+    location;
+
+    log(
+        "Travelled to " +
+        location
+    );
+
 }
 
-alert(
-player.inventory.join("\n")
-);
-}
+// =========================
+// SAVE
+// =========================
 
 function saveGame(){
 
-localStorage.setItem(
-"cultivationSave",
-JSON.stringify(player)
-);
+    localStorage.setItem(
+        "cultivationSave",
+        JSON.stringify(player)
+    );
 
-alert("Saved");
+    log(
+        "Game Saved"
+    );
+
 }
+
+// =========================
+// LOAD
+// =========================
 
 function loadGame(){
 
-let save =
-localStorage.getItem(
-"cultivationSave"
-);
+    let save =
+    localStorage.getItem(
+        "cultivationSave"
+    );
 
-if(save){
+    if(save){
 
-player =
-JSON.parse(save);
+        player =
+        JSON.parse(save);
 
-updateUI();
+        updateUI();
 
-alert("Loaded");
+        log(
+            "Game Loaded"
+        );
+
+    }
+
 }
+
+// =========================
+// UPDATE UI
+// =========================
+
+function updateUI(){
+
+    document.getElementById(
+        "realmName"
+    ).textContent =
+    realms[player.realm];
+
+    document.getElementById(
+        "level"
+    ).textContent =
+    player.level;
+
+    document.getElementById(
+        "qi"
+    ).textContent =
+    Math.floor(
+        player.qi
+    );
+
+    document.getElementById(
+        "spiritStones"
+    ).textContent =
+    player.spiritStones;
+
+    document.getElementById(
+        "attack"
+    ).textContent =
+    player.attack;
+
+    document.getElementById(
+        "defense"
+    ).textContent =
+    player.defense;
+
+    document.getElementById(
+        "hp"
+    ).textContent =
+    player.hp;
+
+    document.getElementById(
+        "pillCount"
+    ).textContent =
+    player.pills;
+
+    document.getElementById(
+        "rebirths"
+    ).textContent =
+    player.rebirths;
+
+    document.getElementById(
+        "location"
+    ).textContent =
+    player.location;
+
+    if(player.weapon){
+
+        document.getElementById(
+            "weaponSlot"
+        ).textContent =
+        player.weapon;
+
+    }
+
+    if(player.armor){
+
+        document.getElementById(
+            "armorSlot"
+        ).textContent =
+        player.armor;
+
+    }
+
+    if(player.beast){
+
+        document.getElementById(
+            "beastSlot"
+        ).textContent =
+        player.beast;
+
+    }
+
 }
 
-setInterval(() => {
-
-let gain =
-2 +
-player.realm +
-player.rebirths;
-
-player.qi += gain;
-
-updateUI();
-
-},1000);
+// =========================
+// START
+// =========================
 
 updateUI();
