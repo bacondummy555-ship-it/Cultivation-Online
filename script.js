@@ -1,384 +1,425 @@
 const realms = [
-    "Mortal",
-    "Body Tempering",
-    "Qi Gathering",
-    "Qi Condensation",
-    "Foundation Establishment",
-    "Golden Core",
-    "Nascent Soul",
-    "Spirit Severing",
-    "Dao Transformation",
-    "Ascendant",
-    "Earth Immortal",
-    "Heaven Immortal",
-    "Mystic Immortal",
-    "Immortal King",
-    "Immortal Emperor",
-    "Divine Lord",
-    "Celestial Monarch",
-    "Ancient Sovereign",
-    "Eternal Sovereign",
-    "True Dao"
+"Mortal",
+"Body Tempering",
+"Qi Gathering",
+"Qi Condensation",
+"Foundation Establishment",
+"Golden Core",
+"Nascent Soul",
+"Spirit Severing",
+"Dao Transformation",
+"Ascendant",
+"Earth Immortal",
+"Heaven Immortal",
+"Mystic Immortal",
+"Immortal King",
+"Immortal Emperor",
+"Divine Lord",
+"Celestial Monarch",
+"Ancient Sovereign",
+"Eternal Sovereign",
+"True Dao"
 ];
 
 let player = {
-    name: "Cultivator",
+realm:0,
+level:1,
 
-    realm: 0,
-    level: 1,
+qi:0,
+spiritStones:0,
 
-    qi: 0,
-    spiritStones: 0,
+attack:10,
+defense:5,
+hp:100,
 
-    attack: 10,
-    defense: 5,
-    hp: 100,
+pills:0,
+rebirths:0,
 
-    weapon: "None",
-    armor: "None",
-
-    sect: "None",
-
-    beast: "None",
-
-    pills: 0,
-
-    rebirths: 0
+inventory:[]
 };
 
-const weapons = [
-    {
-        name:"Iron Sword",
-        attack:10
-    },
-
-    {
-        name:"Spirit Blade",
-        attack:25
-    },
-
-    {
-        name:"Heaven Sword",
-        attack:50
-    },
-
-    {
-        name:"Immortal Blade",
-        attack:100
-    }
+const enemies = [
+{
+name:"Bandit",
+power:50,
+reward:25
+},
+{
+name:"Spirit Wolf",
+power:100,
+reward:50
+},
+{
+name:"Demonic Cultivator",
+power:250,
+reward:100
+},
+{
+name:"Ancient Guardian",
+power:500,
+reward:250
+},
+{
+name:"Dragon King",
+power:1000,
+reward:1000
+}
 ];
 
-const armors = [
-    {
-        name:"Leather Armor",
-        defense:10
-    },
+function updateUI(){
 
-    {
-        name:"Spirit Armor",
-        defense:25
-    },
+document.getElementById("realmName").textContent =
+realms[player.realm];
 
-    {
-        name:"Golden Armor",
-        defense:50
-    },
+document.getElementById("level").textContent =
+player.level;
 
-    {
-        name:"Immortal Armor",
-        defense:100
-    }
-];
+document.getElementById("qi").textContent =
+Math.floor(player.qi);
 
-function breakthroughCost(){
-    return Math.floor(
-        100 * Math.pow(
-            1.8,
-            player.realm
-        )
-    );
+document.getElementById("spiritStones").textContent =
+player.spiritStones;
+
+document.getElementById("attack").textContent =
+player.attack;
+
+document.getElementById("defense").textContent =
+player.defense;
+
+document.getElementById("hp").textContent =
+player.hp;
 }
 
 function cultivate(){
 
-    let gain =
-    10 +
-    (player.realm * 5) +
-    (player.rebirths * 25);
+let gain =
+10 +
+(player.realm * 5) +
+(player.rebirths * 25);
 
-    player.qi += gain;
+player.qi += gain;
 
-    updateUI();
+updateUI();
 }
 
 function breakthrough(){
 
-    if(player.realm >= realms.length - 1){
-        alert("Maximum Realm Reached");
-        return;
-    }
+let cost =
+Math.floor(
+100 *
+Math.pow(
+1.8,
+player.realm
+)
+);
 
-    let cost =
-    breakthroughCost();
+if(
+player.realm >= realms.length - 1
+){
+alert("Maximum Realm Reached");
+return;
+}
 
-    if(player.qi >= cost){
+if(player.qi >= cost){
 
-        player.qi -= cost;
+player.qi -= cost;
 
-        player.realm++;
+player.realm++;
 
-        player.level++;
+player.level++;
 
-        player.attack += 10;
+player.attack += 10;
+player.defense += 5;
+player.hp += 25;
 
-        player.defense += 5;
+alert(
+"Breakthrough to " +
+realms[player.realm]
+);
 
-        player.hp += 25;
+}else{
 
-        alert(
-            "Breakthrough to " +
-            realms[player.realm]
-        );
+alert(
+"Need " +
+cost +
+" Qi"
+);
 
-    }else{
+}
 
-        alert(
-            "Need " +
-            cost +
-            " Qi"
-        );
-
-    }
-
-    updateUI();
+updateUI();
 }
 
 function findEquipment(){
 
-    const weapon =
-    weapons[
-        Math.floor(
-            Math.random() *
-            weapons.length
-        )
-    ];
+const rewards = [
+"Iron Sword",
+"Spirit Blade",
+"Heaven Sword",
+"Immortal Sword",
+"Spirit Armor",
+"Golden Armor"
+];
 
-    const armor =
-    armors[
-        Math.floor(
-            Math.random() *
-            armors.length
-        )
-    ];
+let item =
+rewards[
+Math.floor(
+Math.random() *
+rewards.length
+)
+];
 
-    player.weapon =
-    weapon.name;
+player.inventory.push(item);
 
-    player.armor =
-    armor.name;
+player.attack += 10;
+player.defense += 10;
 
-    player.attack +=
-    weapon.attack;
+alert(
+"Found " + item
+);
 
-    player.defense +=
-    armor.defense;
-
-    alert(
-        "Found " +
-        weapon.name +
-        " and " +
-        armor.name
-    );
-
-    updateUI();
-}
-
-function joinSect(name){
-
-    player.sect = name;
-
-    player.attack += 20;
-
-    player.defense += 20;
-
-    updateUI();
-
-    alert(
-        "Joined " + name
-    );
-}
-
-function craftQiPill(){
-
-    if(
-        player.spiritStones < 50
-    ){
-        alert(
-            "Need 50 Spirit Stones"
-        );
-        return;
-    }
-
-    player.spiritStones -= 50;
-
-    player.pills++;
-
-    updateUI();
-}
-
-function useQiPill(){
-
-    if(player.pills <= 0){
-
-        alert("No Pills");
-
-        return;
-    }
-
-    player.pills--;
-
-    player.qi += 500;
-
-    updateUI();
+updateUI();
 }
 
 function tameBeast(){
 
-    const beasts = [
-        "Spirit Wolf",
-        "Azure Tiger",
-        "Flame Phoenix",
-        "Ancient Dragon"
-    ];
+const beasts = [
+"Spirit Wolf",
+"Azure Tiger",
+"Flame Phoenix",
+"Ancient Dragon"
+];
 
-    player.beast =
-    beasts[
-        Math.floor(
-            Math.random() *
-            beasts.length
-        )
-    ];
+let beast =
+beasts[
+Math.floor(
+Math.random() *
+beasts.length
+)
+];
 
-    player.attack += 50;
+player.inventory.push(
+"Companion: " + beast
+);
 
-    updateUI();
+player.attack += 50;
 
-    alert(
-        "Obtained " +
-        player.beast
-    );
+alert(
+"Tamed " + beast
+);
+
+updateUI();
 }
 
-function updateUI(){
+function runDungeon(){
 
-    document.getElementById(
-        "playerName"
-    ).textContent =
-    player.name;
+let enemy =
+enemies[
+Math.floor(
+Math.random() *
+enemies.length
+)
+];
 
-    document.getElementById(
-        "realmName"
-    ).textContent =
-    realms[player.realm];
+let playerPower =
+player.attack +
+player.defense +
+player.hp +
+(player.realm * 50);
 
-    document.getElementById(
-        "level"
-    ).textContent =
-    player.level;
+if(
+playerPower >
+enemy.power
+){
 
-    document.getElementById(
-        "qi"
-    ).textContent =
-    Math.floor(player.qi);
+player.spiritStones +=
+enemy.reward;
 
-    document.getElementById(
-        "spiritStones"
-    ).textContent =
-    player.spiritStones;
+player.inventory.push(
+enemy.name +
+" Loot"
+);
 
-    document.getElementById(
-        "attack"
-    ).textContent =
-    player.attack;
+document.getElementById(
+"dungeonResult"
+).textContent =
+"Victory against " +
+enemy.name +
+" +" +
+enemy.reward +
+" Stones";
 
-    document.getElementById(
-        "defense"
-    ).textContent =
-    player.defense;
+}else{
 
-    document.getElementById(
-        "hp"
-    ).textContent =
-    player.hp;
+document.getElementById(
+"dungeonResult"
+).textContent =
+"Defeated by " +
+enemy.name;
 
-    document.getElementById(
-        "weaponSlot"
-    ).textContent =
-    player.weapon;
+}
 
-    document.getElementById(
-        "armorSlot"
-    ).textContent =
-    player.armor;
+updateUI();
+}
 
-    document.getElementById(
-        "sectName"
-    ).textContent =
-    player.sect;
+function craftQiPill(){
 
-    document.getElementById(
-        "beastName"
-    ).textContent =
-    player.beast;
+if(
+player.spiritStones < 50
+){
 
-    document.getElementById(
-        "pillCount"
-    ).textContent =
-    player.pills;
+alert(
+"Need 50 Spirit Stones"
+);
 
-    document.getElementById(
-        "rebirths"
-    ).textContent =
-    player.rebirths;
+return;
+}
+
+player.spiritStones -= 50;
+
+player.pills++;
+
+alert(
+"Qi Pill Crafted"
+);
+
+updateUI();
+}
+
+function useQiPill(){
+
+if(player.pills <= 0){
+
+alert(
+"No Pills"
+);
+
+return;
+}
+
+player.pills--;
+
+player.qi += 500;
+
+alert(
+"Used Qi Pill"
+);
+
+updateUI();
+}
+
+function claimQuest(){
+
+if(player.qi < 500){
+
+alert(
+"Need 500 Qi"
+);
+
+return;
+}
+
+player.spiritStones += 200;
+
+alert(
+"Quest Complete!"
+);
+
+updateUI();
+}
+
+function ascend(){
+
+if(
+player.realm <
+realms.length - 1
+){
+
+alert(
+"Reach True Dao First"
+);
+
+return;
+}
+
+player.rebirths++;
+
+player.realm = 0;
+
+player.level = 1;
+
+player.qi = 0;
+
+player.attack += 100;
+
+player.defense += 100;
+
+player.hp += 500;
+
+alert(
+"Ascension Successful!"
+);
+
+updateUI();
+}
+
+function showInventory(){
+
+if(
+player.inventory.length === 0
+){
+
+alert(
+"Inventory Empty"
+);
+
+return;
+}
+
+alert(
+player.inventory.join("\n")
+);
 }
 
 function saveGame(){
 
-    localStorage.setItem(
-        "cultivationSave",
-        JSON.stringify(player)
-    );
+localStorage.setItem(
+"cultivationSave",
+JSON.stringify(player)
+);
 
-    alert("Saved");
+alert("Saved");
 }
 
 function loadGame(){
 
-    let save =
-    localStorage.getItem(
-        "cultivationSave"
-    );
+let save =
+localStorage.getItem(
+"cultivationSave"
+);
 
-    if(save){
+if(save){
 
-        player =
-        JSON.parse(save);
+player =
+JSON.parse(save);
 
-        updateUI();
-    }
+updateUI();
+
+alert("Loaded");
+}
 }
 
 setInterval(() => {
 
-    let autoGain =
-    2 +
-    player.realm +
-    player.rebirths;
+let gain =
+2 +
+player.realm +
+player.rebirths;
 
-    player.qi += autoGain;
+player.qi += gain;
 
-    updateUI();
+updateUI();
 
-}, 1000);
+},1000);
 
 updateUI();
