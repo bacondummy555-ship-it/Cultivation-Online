@@ -415,3 +415,393 @@ function updateUI(){
 // =========================
 
 updateUI();
+
+// =========================
+// PART 2
+// INVENTORY + SHOP
+// =========================
+
+// Item rarities
+
+const rarities = [
+
+{
+name:"Common",
+multiplier:1,
+color:"common"
+},
+
+{
+name:"Rare",
+multiplier:2,
+color:"rare"
+},
+
+{
+name:"Epic",
+multiplier:4,
+color:"epic"
+},
+
+{
+name:"Legendary",
+multiplier:8,
+color:"legendary"
+},
+
+{
+name:"Divine",
+multiplier:15,
+color:"divine"
+}
+
+];
+
+// =========================
+// INVENTORY UI
+// =========================
+
+function updateInventory(){
+
+    const inventory =
+    document.getElementById(
+        "inventoryList"
+    );
+
+    if(!inventory) return;
+
+    inventory.innerHTML = "";
+
+    if(
+        player.inventory.length === 0
+    ){
+
+        inventory.innerHTML =
+        "Inventory Empty";
+
+        return;
+    }
+
+    player.inventory.forEach(
+        (item,index)=>{
+
+        let button =
+        document.createElement(
+            "button"
+        );
+
+        button.textContent =
+        item.name;
+
+        if(item.class){
+
+            button.classList.add(
+                item.class
+            );
+
+        }
+
+        button.onclick =
+        function(){
+
+            equipItem(
+                index
+            );
+
+        };
+
+        inventory.appendChild(
+            button
+        );
+
+    });
+
+}
+
+// =========================
+// EQUIP ITEM
+// =========================
+
+function equipItem(index){
+
+    let item =
+    player.inventory[index];
+
+    if(!item)
+        return;
+
+    if(
+        item.type === "weapon"
+    ){
+
+        player.weapon =
+        item.name;
+
+        player.attack +=
+        item.attack;
+
+        log(
+            "Equipped " +
+            item.name
+        );
+
+    }
+
+    if(
+        item.type === "armor"
+    ){
+
+        player.armor =
+        item.name;
+
+        player.defense +=
+        item.defense;
+
+        log(
+            "Equipped " +
+            item.name
+        );
+
+    }
+
+    updateUI();
+
+}
+
+// =========================
+// BUY CHEST
+// =========================
+
+function buyChest(){
+
+    if(
+        player.spiritStones < 200
+    ){
+
+        alert(
+            "Need 200 Spirit Stones"
+        );
+
+        return;
+    }
+
+    player.spiritStones -= 200;
+
+    const rarity =
+    rarities[
+        Math.floor(
+            Math.random() *
+            rarities.length
+        )
+    ];
+
+    const weapon = {
+
+        name:
+        rarity.name +
+        " Sword",
+
+        type:"weapon",
+
+        attack:
+        10 *
+        rarity.multiplier,
+
+        class:
+        rarity.color
+
+    };
+
+    player.inventory.push(
+        weapon
+    );
+
+    log(
+        "Found " +
+        weapon.name
+    );
+
+    updateInventory();
+
+    updateUI();
+
+}
+
+// =========================
+// BUY QI PILL
+// =========================
+
+function buyQiPill(){
+
+    if(
+        player.spiritStones < 50
+    ){
+
+        alert(
+            "Need 50 Stones"
+        );
+
+        return;
+    }
+
+    player.spiritStones -= 50;
+
+    player.pills++;
+
+    log(
+        "Purchased Qi Pill"
+    );
+
+    updateUI();
+
+}
+
+// =========================
+// CRAFT QI PILL
+// =========================
+
+function craftQiPill(){
+
+    if(
+        player.spiritStones < 25
+    ){
+
+        alert(
+            "Need 25 Stones"
+        );
+
+        return;
+    }
+
+    player.spiritStones -= 25;
+
+    player.pills++;
+
+    log(
+        "Crafted Qi Pill"
+    );
+
+    updateUI();
+
+}
+
+// =========================
+// USE QI PILL
+// =========================
+
+function useQiPill(){
+
+    if(
+        player.pills <= 0
+    ){
+
+        alert(
+            "No Pills"
+        );
+
+        return;
+    }
+
+    player.pills--;
+
+    player.qi += 500;
+
+    log(
+        "Used Qi Pill"
+    );
+
+    updateUI();
+
+}
+
+// =========================
+// RANDOM EQUIPMENT
+// =========================
+
+function findEquipment(){
+
+    const rarity =
+    rarities[
+        Math.floor(
+            Math.random() *
+            rarities.length
+        )
+    ];
+
+    let roll =
+    Math.random();
+
+    let item;
+
+    if(roll < 0.5){
+
+        item = {
+
+            name:
+            rarity.name +
+            " Blade",
+
+            type:"weapon",
+
+            attack:
+            5 *
+            rarity.multiplier,
+
+            class:
+            rarity.color
+
+        };
+
+    }else{
+
+        item = {
+
+            name:
+            rarity.name +
+            " Armor",
+
+            type:"armor",
+
+            defense:
+            5 *
+            rarity.multiplier,
+
+            class:
+            rarity.color
+
+        };
+
+    }
+
+    player.inventory.push(
+        item
+    );
+
+    log(
+        "Found " +
+        item.name
+    );
+
+    updateInventory();
+
+}
+
+// =========================
+// SHOW INVENTORY
+// =========================
+
+function showInventory(){
+
+    updateInventory();
+
+    log(
+        "Opened Inventory"
+    );
+
+}
+
+// =========================
+// START INVENTORY
+// =========================
+
+updateInventory();
