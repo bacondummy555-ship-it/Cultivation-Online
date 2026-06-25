@@ -58,6 +58,17 @@ let player = {
 
     achievements: []
 
+    equippedWeapon: null,
+equippedArmor: null,
+
+baseAttack: 10,
+baseDefense: 5,
+
+currentHP: 100,
+maxHP: 100,
+
+itemLevel: 1
+
 };
 
 // =========================
