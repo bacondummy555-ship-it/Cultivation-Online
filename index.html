@@ -1,353 +1,336 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Cultivation Online RPG</title>
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="style.css">
+<title>
+Cultivation RPG V8
+</title>
+
+<link
+rel="stylesheet"
+href="style.css">
+
 </head>
+
 <body>
 
 <header>
-    <h1>⚔ Cultivation Online RPG ⚔</h1>
+
+<h1>
+⚔ Cultivation RPG V8 ⚔
+</h1>
+
 </header>
 
-<div class="container">
+<div class="game-container">
 
-    <!-- CHARACTER -->
+    <!-- LEFT SIDEBAR -->
 
-    <div class="panel">
+    <aside class="sidebar">
 
-        <h2>Character</h2>
+        <div class="panel">
 
-        <p>
-            Realm:
-            <span id="realmName">
-                Mortal
-            </span>
-        </p>
+            <h2>
+                Character
+            </h2>
 
-        <p>
-            Level:
-            <span id="level">
-                1
-            </span>
-        </p>
+            <p>
+                Realm:
+                <span id="realmName">
+                    Mortal
+                </span>
+            </p>
 
-        <p>
-            Qi:
-            <span id="qi">
-                0
-            </span>
-        </p>
+            <p>
+                Level:
+                <span id="level">
+                    1
+                </span>
+            </p>
 
-        <p>
-            Spirit Stones:
-            <span id="spiritStones">
-                0
-            </span>
-        </p>
+            <p>
+                Spirit Stones:
+                <span id="stones">
+                    0
+                </span>
+            </p>
 
-        <p>
-            Attack:
-            <span id="attack">
-                10
-            </span>
-        </p>
+            <p>
+                Attack:
+                <span id="attack">
+                    10
+                </span>
+            </p>
 
-        <p>
-            Defense:
-            <span id="defense">
-                5
-            </span>
-        </p>
+            <p>
+                Defense:
+                <span id="defense">
+                    5
+                </span>
+            </p>
 
-        <p>
-            HP:
-            <span id="hp">
-                100
-            </span>
-        </p>
+        </div>
 
-        <button onclick="cultivate()">
+        <div class="panel">
+
+            <h2>
+                Cultivation
+            </h2>
+
+            <p>
+                Qi:
+                <span id="qi">
+                    0
+                </span>
+            </p>
+
+            <div class="bar">
+
+                <div
+                id="qiFill"
+                class="qi-fill">
+                </div>
+
+            </div>
+
+            <button
+            onclick="cultivate()">
+
             Cultivate
-        </button>
 
-        <button onclick="breakthrough()">
+            </button>
+
+            <button
+            onclick="breakthrough()">
+
             Breakthrough
-        </button>
 
-    </div>
-
-    <!-- EQUIPMENT -->
-
-    <div class="panel">
-
-        <h2>Equipment</h2>
-
-        <p>
-            Weapon:
-            <span id="weaponSlot">
-                None
-            </span>
-        </p>
-
-        <p>
-            Armor:
-            <span id="armorSlot">
-                None
-            </span>
-        </p>
-
-        <p>
-            Beast:
-            <span id="beastSlot">
-                None
-            </span>
-        </p>
-
-    </div>
-
-    <!-- INVENTORY -->
-
-    <div class="panel">
-
-        <h2>Inventory</h2>
-
-        <div id="inventoryList">
-
-            Empty
+            </button>
 
         </div>
 
-    </div>
+        <div class="panel">
 
-    <!-- SHOP -->
+            <h2>
+                Beast
+            </h2>
 
-    <div class="panel">
+            <p id="beastName">
+                None
+            </p>
 
-        <h2>Shop</h2>
+            <button
+            onclick="tameBeast()">
 
-        <button onclick="buyQiPill()">
-            Buy Qi Pill (50 Stones)
-        </button>
-
-        <button onclick="buyChest()">
-            Buy Equipment Chest (200 Stones)
-        </button>
-
-    </div>
-
-    <!-- ALCHEMY -->
-
-    <div class="panel">
-
-        <h2>Alchemy</h2>
-
-        <button onclick="craftQiPill()">
-            Craft Qi Pill
-        </button>
-
-        <button onclick="useQiPill()">
-            Use Qi Pill
-        </button>
-
-        <p>
-            Pills:
-            <span id="pillCount">
-                0
-            </span>
-        </p>
-
-    </div>
-
-    <!-- DUNGEONS -->
-
-    <div class="panel">
-
-        <h2>Dungeons</h2>
-
-        <button onclick="runDungeon()">
-            Enter Dungeon
-        </button>
-
-        <div id="dungeonResult">
-
-            Awaiting Challenge
-
-        </div>
-
-    </div>
-
-    <!-- BOSSES -->
-
-    <div class="panel">
-
-        <h2>Boss Raid</h2>
-
-        <button onclick="fightBoss()">
-            Challenge Boss
-        </button>
-
-        <div id="bossResult">
-
-            No Boss Battle
-
-        </div>
-
-    </div>
-
-    <!-- SKILLS -->
-
-    <div class="panel">
-
-        <h2>Skills</h2>
-
-        <button onclick="useFireball()">
-            Fireball
-        </button>
-
-        <button onclick="useSwordIntent()">
-            Sword Intent
-        </button>
-
-        <button onclick="useLightningStrike()">
-            Lightning Strike
-        </button>
-
-    </div>
-
-    <!-- DAILY QUEST -->
-
-    <div class="panel">
-
-        <h2>Daily Quest</h2>
-
-        <p>
-            Gather 500 Qi
-        </p>
-
-        <button onclick="claimQuest()">
-            Claim Reward
-        </button>
-
-    </div>
-
-    <!-- BEASTS -->
-
-    <div class="panel">
-
-        <h2>Beast Companion</h2>
-
-        <button onclick="tameBeast()">
             Tame Beast
-        </button>
 
-        <button onclick="evolveBeast()">
-            Evolve Beast
-        </button>
-
-    </div>
-
-    <!-- ACHIEVEMENTS -->
-
-    <div class="panel">
-
-        <h2>Achievements</h2>
-
-        <div id="achievementList">
-
-            No Achievements Yet
+            </button>
 
         </div>
 
-    </div>
+    </aside>
 
-    <!-- ASCENSION -->
+    <!-- MAIN CONTENT -->
 
-    <div class="panel">
+    <main>
 
-        <h2>Ascension</h2>
+        <!-- HP PANEL -->
 
-        <p>
-            Rebirths:
-            <span id="rebirths">
-                0
-            </span>
-        </p>
+        <div class="panel">
 
-        <button onclick="ascend()">
-            Ascend
-        </button>
+            <h2>
+                Combat Stats
+            </h2>
 
-    </div>
+            <p>
 
-    <!-- WORLD MAP -->
+                HP:
 
-    <div class="panel">
+                <span id="hpText">
+                    100 / 100
+                </span>
 
-        <h2>World Map</h2>
+            </p>
 
-        <button onclick="travel('Mortal Village')">
-            Mortal Village
-        </button>
+            <div class="bar">
 
-        <button onclick="travel('Spirit Forest')">
-            Spirit Forest
-        </button>
+                <div
+                id="hpFill"
+                class="hp-fill">
+                </div>
 
-        <button onclick="travel('Demon Mountain')">
-            Demon Mountain
-        </button>
+            </div>
 
-        <button onclick="travel('Heavenly Palace')">
-            Heavenly Palace
-        </button>
+        </div>
 
-        <p>
-            Location:
-            <span id="location">
-                Mortal Village
-            </span>
-        </p>
+        <!-- EQUIPMENT -->
 
-    </div>
+        <div class="panel">
 
-    <!-- COMBAT LOG -->
+            <h2>
+                Equipment
+            </h2>
 
-    <div class="panel">
+            <div class="equipment-grid">
 
-        <h2>Combat Log</h2>
+                <div class="slot">
 
-        <div id="combatLog">
+                    Weapon
+
+                    <span
+                    id="weaponSlot">
+
+                    None
+
+                    </span>
+
+                </div>
+
+                <div class="slot">
+
+                    Armor
+
+                    <span
+                    id="armorSlot">
+
+                    None
+
+                    </span>
+
+                </div>
+
+                <div class="slot">
+
+                    Ring
+
+                    <span
+                    id="ringSlot">
+
+                    None
+
+                    </span>
+
+                </div>
+
+                <div class="slot">
+
+                    Boots
+
+                    <span
+                    id="bootsSlot">
+
+                    None
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- INVENTORY -->
+
+        <div class="panel">
+
+            <h2>
+                Inventory
+            </h2>
+
+            <div
+            id="inventoryGrid"
+            class="inventory-grid">
+
+            </div>
+
+        </div>
+
+        <!-- COMBAT -->
+
+        <div class="panel">
+
+            <h2>
+                Combat
+            </h2>
+
+            <button
+            onclick="fightMonster()">
+
+            Fight Monster
+
+            </button>
+
+            <button
+            onclick="fightBoss()">
+
+            Fight Boss
+
+            </button>
+
+        </div>
+
+        <!-- QUESTS -->
+
+        <div class="panel">
+
+            <h2>
+                Quests
+            </h2>
+
+            <div
+            id="questList">
+
+            </div>
+
+        </div>
+
+        <!-- DUNGEONS -->
+
+        <div class="panel">
+
+            <h2>
+                Dungeons
+            </h2>
+
+            <button
+            onclick="enterDungeon()">
+
+            Enter Dungeon
+
+            </button>
+
+        </div>
+
+        <!-- LOG -->
+
+        <div class="panel">
+
+            <h2>
+                Combat Log
+            </h2>
+
+            <div
+            id="combatLog">
 
             Welcome Cultivator
 
+            </div>
+
         </div>
 
-    </div>
-
-    <!-- SAVE -->
-
-    <div class="panel">
-
-        <h2>Save</h2>
-
-        <button onclick="saveGame()">
-            Save
-        </button>
-
-        <button onclick="loadGame()">
-            Load
-        </button>
-
-    </div>
+    </main>
 
 </div>
 
 <script src="script.js"></script>
 
 </body>
+
 </html>
