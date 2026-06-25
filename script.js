@@ -535,45 +535,33 @@ function updateInventory(){
 
 function equipItem(index){
 
-    let item =
+    const item =
     player.inventory[index];
 
-    if(!item)
-        return;
+    if(!item) return;
 
-    if(
-        item.type === "weapon"
-    ){
+    if(item.type === "weapon"){
 
-        player.weapon =
-        item.name;
-
-        player.attack +=
-        item.attack;
-
-        log(
-            "Equipped " +
-            item.name
-        );
+        player.equippedWeapon = item;
 
     }
 
-    if(
-        item.type === "armor"
-    ){
+    if(item.type === "armor"){
 
-        player.armor =
-        item.name;
-
-        player.defense +=
-        item.defense;
-
-        log(
-            "Equipped " +
-            item.name
-        );
+        player.equippedArmor = item;
 
     }
+
+    recalculateStats();
+
+    updateUI();
+
+    log(
+        "Equipped " +
+        item.name
+    );
+
+}
 
     updateUI();
 
