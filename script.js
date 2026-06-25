@@ -805,3 +805,460 @@ function showInventory(){
 // =========================
 
 updateInventory();
+
+// =========================
+// PART 3
+// DUNGEONS + BOSSES
+// SKILLS + BEASTS
+// ACHIEVEMENTS
+// =========================
+
+// =========================
+// DUNGEON ENEMIES
+// =========================
+
+const dungeonEnemies = [
+
+{
+name:"Bandit",
+hp:50,
+attack:5,
+reward:25
+},
+
+{
+name:"Spirit Wolf",
+hp:100,
+attack:10,
+reward:50
+},
+
+{
+name:"Demonic Cultivator",
+hp:250,
+attack:20,
+reward:100
+},
+
+{
+name:"Ancient Guardian",
+hp:500,
+attack:40,
+reward:250
+},
+
+{
+name:"Dragon King",
+hp:1000,
+attack:100,
+reward:1000
+}
+
+];
+
+// =========================
+// BOSSES
+// =========================
+
+const bosses = [
+
+{
+name:"Demon Lord",
+power:500,
+reward:500
+},
+
+{
+name:"Heaven Emperor",
+power:1500,
+reward:1500
+},
+
+{
+name:"Ancient Dragon",
+power:5000,
+reward:5000
+},
+
+{
+name:"Chaos Sovereign",
+power:15000,
+reward:15000
+}
+
+];
+
+// =========================
+// DUNGEON
+// =========================
+
+function runDungeon(){
+
+    const enemy =
+    dungeonEnemies[
+        Math.floor(
+            Math.random() *
+            dungeonEnemies.length
+        )
+    ];
+
+    let playerPower =
+    player.attack +
+    player.defense +
+    player.hp +
+    (player.realm * 50);
+
+    let enemyPower =
+    enemy.hp +
+    enemy.attack;
+
+    const result =
+    document.getElementById(
+        "dungeonResult"
+    );
+
+    if(playerPower > enemyPower){
+
+        player.spiritStones +=
+        enemy.reward;
+
+        result.textContent =
+        "Victory vs " +
+        enemy.name +
+        " +" +
+        enemy.reward +
+        " Stones";
+
+        log(
+            "Defeated " +
+            enemy.name
+        );
+
+        findEquipment();
+
+    }else{
+
+        result.textContent =
+        "Defeated by " +
+        enemy.name;
+
+        log(
+            "Lost to " +
+            enemy.name
+        );
+
+    }
+
+    checkAchievements();
+
+    updateUI();
+}
+
+// =========================
+// BOSS RAID
+// =========================
+
+function fightBoss(){
+
+    const boss =
+    bosses[
+        Math.floor(
+            Math.random() *
+            bosses.length
+        )
+    ];
+
+    let power =
+    player.attack +
+    player.defense +
+    player.hp +
+    (player.realm * 100);
+
+    const result =
+    document.getElementById(
+        "bossResult"
+    );
+
+    if(power > boss.power){
+
+        player.spiritStones +=
+        boss.reward;
+
+        player.qi +=
+        boss.reward * 2;
+
+        result.textContent =
+        "Defeated " +
+        boss.name;
+
+        log(
+            "Boss defeated: " +
+            boss.name
+        );
+
+    }else{
+
+        result.textContent =
+        "Failed against " +
+        boss.name;
+
+        log(
+            "Boss defeated you"
+        );
+
+    }
+
+    updateUI();
+}
+
+// =========================
+// SKILLS
+// =========================
+
+function useFireball(){
+
+    player.qi += 100;
+
+    log(
+        "Fireball cast. +100 Qi"
+    );
+
+    updateUI();
+}
+
+function useSwordIntent(){
+
+    player.attack += 25;
+
+    log(
+        "Sword Intent activated"
+    );
+
+    updateUI();
+}
+
+function useLightningStrike(){
+
+    player.attack += 50;
+
+    log(
+        "Lightning Strike activated"
+    );
+
+    updateUI();
+}
+
+// =========================
+// BEASTS
+// =========================
+
+const beastStages = [
+
+"Spirit Wolf",
+
+"Azure Wolf",
+
+"Celestial Wolf",
+
+"Divine Wolf"
+
+];
+
+// =========================
+// TAME BEAST
+// =========================
+
+function tameBeast(){
+
+    if(player.beast){
+
+        alert(
+            "You already have a beast"
+        );
+
+        return;
+    }
+
+    player.beast =
+    beastStages[0];
+
+    player.attack += 50;
+
+    log(
+        "Tamed Spirit Wolf"
+    );
+
+    updateUI();
+}
+
+// =========================
+// EVOLVE BEAST
+// =========================
+
+function evolveBeast(){
+
+    if(!player.beast){
+
+        alert(
+            "No Beast"
+        );
+
+        return;
+    }
+
+    let current =
+    beastStages.indexOf(
+        player.beast
+    );
+
+    if(
+        current >=
+        beastStages.length - 1
+    ){
+
+        alert(
+            "Maximum Evolution"
+        );
+
+        return;
+    }
+
+    player.beast =
+    beastStages[
+        current + 1
+    ];
+
+    player.attack += 100;
+
+    log(
+        "Beast evolved into " +
+        player.beast
+    );
+
+    updateUI();
+}
+
+// =========================
+// ACHIEVEMENTS
+// =========================
+
+function unlockAchievement(name){
+
+    if(
+        player.achievements.includes(
+            name
+        )
+    ){
+        return;
+    }
+
+    player.achievements.push(
+        name
+    );
+
+    log(
+        "Achievement: " +
+        name
+    );
+
+    updateAchievements();
+}
+
+// =========================
+// CHECK ACHIEVEMENTS
+// =========================
+
+function checkAchievements(){
+
+    if(
+        player.realm >= 5
+    ){
+
+        unlockAchievement(
+            "Golden Core Expert"
+        );
+
+    }
+
+    if(
+        player.realm >= 10
+    ){
+
+        unlockAchievement(
+            "Immortal Path"
+        );
+
+    }
+
+    if(
+        player.spiritStones >= 5000
+    ){
+
+        unlockAchievement(
+            "Wealthy Cultivator"
+        );
+
+    }
+
+    if(
+        player.rebirths >= 1
+    ){
+
+        unlockAchievement(
+            "First Ascension"
+        );
+
+    }
+
+}
+
+// =========================
+// UPDATE ACHIEVEMENTS
+// =========================
+
+function updateAchievements(){
+
+    const div =
+    document.getElementById(
+        "achievementList"
+    );
+
+    if(!div) return;
+
+    if(
+        player.achievements.length === 0
+    ){
+
+        div.innerHTML =
+        "No Achievements Yet";
+
+        return;
+    }
+
+    div.innerHTML = "";
+
+    player.achievements.forEach(
+        achievement=>{
+
+        let p =
+        document.createElement(
+            "p"
+        );
+
+        p.textContent =
+        "🏆 " +
+        achievement;
+
+        div.appendChild(
+            p
+        );
+
+    });
+
+}
+
+// =========================
+// INITIALIZE
+// =========================
+
+updateAchievements();
