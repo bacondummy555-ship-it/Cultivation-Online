@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cultivation Online Lite</title>
+    <style>
+        body{
+            background:#111;
+            color:white;
+            font-family:Arial;
+            text-align:center;
+            padding:20px;
+        }
+
+        .box{
+            background:#222;
+            padding:20px;
+            border-radius:10px;
+            width:500px;
+            margin:auto;
+        }
+
+        button{
+            padding:10px 20px;
+            margin:5px;
+            cursor:pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h1>Cultivation Online Lite</h1>
+
+    <h2 id="realm">Mortal</h2>
+
+    <p>Qi: <span id="qi">0</span></p>
+
+    <p>Qi per Second: <span id="qps">1</span></p>
+
+    <button onclick="cultivate()">
+        Gather Qi
+    </button>
+
+    <button onclick="breakthrough()">
+        Breakthrough
+    </button>
+
+    <button onclick="saveGame()">
+        Save
+    </button>
+</div>
+
+<script>
+let game = {
+    qi: 0,
+    qps: 1,
+    realm: 0
+};
+
+const realms = [
+    "Mortal",
+    "Qi Refinement",
+    "Foundation Establishment",
+    "Core Formation",
+    "Nascent Soul",
+    "Spirit Severing",
+    "Immortal"
+];
+
+function cultivate(){
+    game.qi += game.qps;
+    updateUI();
+}
+
+function breakthrough(){
+    let cost = (game.realm + 1) * 100;
+
+    if(game.qi >= cost){
+        game.qi -= cost;
+        game.realm++;
+        game.qps += 2;
+
+        if(game.realm >= realms.length){
+            game.realm = realms.length - 1;
+        }
+
+        updateUI();
+    }else{
+        alert("Not enough Qi!");
+    }
+}
+
+function updateUI(){
+    document.getElementById("qi").innerText =
+        Math.floor(game.qi);
+
+    document.getElementById("qps").innerText =
+        game.qps;
+
+    document.getElementById("realm").innerText =
+        realms[game.realm];
+}
+
+setInterval(() => {
+    game.qi += game.qps;
+    updateUI();
+},1000);
+
+function saveGame(){
+    localStorage.setItem(
+        "cultivationSave",
+        JSON.stringify(game)
+    );
+}
+
+function loadGame(){
+    let save =
+        localStorage.getItem("cultivationSave");
+
+    if(save){
+        game = JSON.parse(save);
+    }
+
+    updateUI();
+}
+
+loadGame();
+</script>
+
+</body>
+</html>
