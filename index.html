@@ -3,28 +3,73 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cultivation Online Starter</title>
+
+<title>Cultivation Online RPG</title>
+
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
-    <h1>⚔ Cultivation Online Starter ⚔</h1>
+    <h1>⚔ Cultivation Online RPG ⚔</h1>
 </header>
 
 <div class="container">
 
+    <!-- CHARACTER -->
+
     <div class="panel">
+
         <h2>Character</h2>
 
-        <p>Realm: <span id="realmName"></span></p>
-        <p>Level: <span id="level"></span></p>
-        <p>Qi: <span id="qi"></span></p>
-        <p>Spirit Stones: <span id="spiritStones"></span></p>
+        <p>
+            Realm:
+            <span id="realmName">
+                Mortal
+            </span>
+        </p>
 
-        <p>Attack: <span id="attack"></span></p>
-        <p>Defense: <span id="defense"></span></p>
-        <p>HP: <span id="hp"></span></p>
+        <p>
+            Level:
+            <span id="level">
+                1
+            </span>
+        </p>
+
+        <p>
+            Qi:
+            <span id="qi">
+                0
+            </span>
+        </p>
+
+        <p>
+            Spirit Stones:
+            <span id="spiritStones">
+                0
+            </span>
+        </p>
+
+        <p>
+            Attack:
+            <span id="attack">
+                10
+            </span>
+        </p>
+
+        <p>
+            Defense:
+            <span id="defense">
+                5
+            </span>
+        </p>
+
+        <p>
+            HP:
+            <span id="hp">
+                100
+            </span>
+        </p>
 
         <button onclick="cultivate()">
             Cultivate
@@ -33,33 +78,72 @@
         <button onclick="breakthrough()">
             Breakthrough
         </button>
+
     </div>
 
-    <div class="panel">
-        <h2>Equipment & Companions</h2>
-
-        <button onclick="findEquipment()">
-            Find Equipment
-        </button>
-
-        <button onclick="tameBeast()">
-            Tame Beast
-        </button>
-    </div>
+    <!-- EQUIPMENT -->
 
     <div class="panel">
-        <h2>Dungeons</h2>
 
-        <button onclick="runDungeon()">
-            Enter Dungeon
-        </button>
+        <h2>Equipment</h2>
 
-        <p id="dungeonResult">
-            Ready.
+        <p>
+            Weapon:
+            <span id="weaponSlot">
+                None
+            </span>
         </p>
+
+        <p>
+            Armor:
+            <span id="armorSlot">
+                None
+            </span>
+        </p>
+
+        <p>
+            Beast:
+            <span id="beastSlot">
+                None
+            </span>
+        </p>
+
     </div>
 
+    <!-- INVENTORY -->
+
     <div class="panel">
+
+        <h2>Inventory</h2>
+
+        <div id="inventoryList">
+
+            Empty
+
+        </div>
+
+    </div>
+
+    <!-- SHOP -->
+
+    <div class="panel">
+
+        <h2>Shop</h2>
+
+        <button onclick="buyQiPill()">
+            Buy Qi Pill (50 Stones)
+        </button>
+
+        <button onclick="buyChest()">
+            Buy Equipment Chest (200 Stones)
+        </button>
+
+    </div>
+
+    <!-- ALCHEMY -->
+
+    <div class="panel">
+
         <h2>Alchemy</h2>
 
         <button onclick="craftQiPill()">
@@ -69,42 +153,196 @@
         <button onclick="useQiPill()">
             Use Qi Pill
         </button>
+
+        <p>
+            Pills:
+            <span id="pillCount">
+                0
+            </span>
+        </p>
+
     </div>
 
+    <!-- DUNGEONS -->
+
     <div class="panel">
+
+        <h2>Dungeons</h2>
+
+        <button onclick="runDungeon()">
+            Enter Dungeon
+        </button>
+
+        <div id="dungeonResult">
+
+            Awaiting Challenge
+
+        </div>
+
+    </div>
+
+    <!-- BOSSES -->
+
+    <div class="panel">
+
+        <h2>Boss Raid</h2>
+
+        <button onclick="fightBoss()">
+            Challenge Boss
+        </button>
+
+        <div id="bossResult">
+
+            No Boss Battle
+
+        </div>
+
+    </div>
+
+    <!-- SKILLS -->
+
+    <div class="panel">
+
+        <h2>Skills</h2>
+
+        <button onclick="useFireball()">
+            Fireball
+        </button>
+
+        <button onclick="useSwordIntent()">
+            Sword Intent
+        </button>
+
+        <button onclick="useLightningStrike()">
+            Lightning Strike
+        </button>
+
+    </div>
+
+    <!-- DAILY QUEST -->
+
+    <div class="panel">
+
         <h2>Daily Quest</h2>
+
+        <p>
+            Gather 500 Qi
+        </p>
 
         <button onclick="claimQuest()">
             Claim Reward
         </button>
+
     </div>
 
+    <!-- BEASTS -->
+
     <div class="panel">
+
+        <h2>Beast Companion</h2>
+
+        <button onclick="tameBeast()">
+            Tame Beast
+        </button>
+
+        <button onclick="evolveBeast()">
+            Evolve Beast
+        </button>
+
+    </div>
+
+    <!-- ACHIEVEMENTS -->
+
+    <div class="panel">
+
+        <h2>Achievements</h2>
+
+        <div id="achievementList">
+
+            No Achievements Yet
+
+        </div>
+
+    </div>
+
+    <!-- ASCENSION -->
+
+    <div class="panel">
+
         <h2>Ascension</h2>
+
+        <p>
+            Rebirths:
+            <span id="rebirths">
+                0
+            </span>
+        </p>
 
         <button onclick="ascend()">
             Ascend
         </button>
+
     </div>
 
-    <div class="panel">
-        <h2>Inventory</h2>
+    <!-- WORLD MAP -->
 
-        <button onclick="showInventory()">
-            View Inventory
+    <div class="panel">
+
+        <h2>World Map</h2>
+
+        <button onclick="travel('Mortal Village')">
+            Mortal Village
         </button>
+
+        <button onclick="travel('Spirit Forest')">
+            Spirit Forest
+        </button>
+
+        <button onclick="travel('Demon Mountain')">
+            Demon Mountain
+        </button>
+
+        <button onclick="travel('Heavenly Palace')">
+            Heavenly Palace
+        </button>
+
+        <p>
+            Location:
+            <span id="location">
+                Mortal Village
+            </span>
+        </p>
+
     </div>
 
+    <!-- COMBAT LOG -->
+
     <div class="panel">
-        <h2>Save System</h2>
+
+        <h2>Combat Log</h2>
+
+        <div id="combatLog">
+
+            Welcome Cultivator
+
+        </div>
+
+    </div>
+
+    <!-- SAVE -->
+
+    <div class="panel">
+
+        <h2>Save</h2>
 
         <button onclick="saveGame()">
-            Save Game
+            Save
         </button>
 
         <button onclick="loadGame()">
-            Load Game
+            Load
         </button>
+
     </div>
 
 </div>
