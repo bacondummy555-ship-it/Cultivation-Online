@@ -3,14 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cultivation Online</title>
-
+<title>Cultivation Online Starter</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
-    <h1>⚔ Cultivation Online ⚔</h1>
+    <h1>⚔ Cultivation Online Starter ⚔</h1>
 </header>
 
 <div class="container">
@@ -18,16 +17,14 @@
     <div class="panel">
         <h2>Character</h2>
 
-        <p>Name: <span id="playerName">Cultivator</span></p>
-        <p>Realm: <span id="realmName">Mortal</span></p>
-        <p>Level: <span id="level">1</span></p>
+        <p>Realm: <span id="realmName"></span></p>
+        <p>Level: <span id="level"></span></p>
+        <p>Qi: <span id="qi"></span></p>
+        <p>Spirit Stones: <span id="spiritStones"></span></p>
 
-        <p>Qi: <span id="qi">0</span></p>
-        <p>Spirit Stones: <span id="spiritStones">0</span></p>
-
-        <p>Attack: <span id="attack">10</span></p>
-        <p>Defense: <span id="defense">5</span></p>
-        <p>HP: <span id="hp">100</span></p>
+        <p>Attack: <span id="attack"></span></p>
+        <p>Defense: <span id="defense"></span></p>
+        <p>HP: <span id="hp"></span></p>
 
         <button onclick="cultivate()">
             Cultivate
@@ -39,62 +36,11 @@
     </div>
 
     <div class="panel">
-        <h2>Equipment</h2>
-
-        <p>Weapon:
-            <span id="weaponSlot">None</span>
-        </p>
-
-        <p>Armor:
-            <span id="armorSlot">None</span>
-        </p>
+        <h2>Equipment & Companions</h2>
 
         <button onclick="findEquipment()">
-            Search Equipment
+            Find Equipment
         </button>
-    </div>
-
-    <div class="panel">
-        <h2>Sect</h2>
-
-        <p>
-            Current Sect:
-            <span id="sectName">None</span>
-        </p>
-
-        <button onclick="joinSect('Azure Dragon Sect')">
-            Azure Dragon Sect
-        </button>
-
-        <button onclick="joinSect('Heavenly Sword Sect')">
-            Heavenly Sword Sect
-        </button>
-    </div>
-
-    <div class="panel">
-        <h2>Alchemy</h2>
-
-        <button onclick="craftQiPill()">
-            Craft Qi Pill
-        </button>
-
-        <button onclick="useQiPill()">
-            Use Qi Pill
-        </button>
-
-        <p>
-            Pills:
-            <span id="pillCount">0</span>
-        </p>
-    </div>
-
-    <div class="panel">
-        <h2>Beast Companion</h2>
-
-        <p>
-            Companion:
-            <span id="beastName">None</span>
-        </p>
 
         <button onclick="tameBeast()">
             Tame Beast
@@ -109,16 +55,24 @@
         </button>
 
         <p id="dungeonResult">
-            No dungeon attempted.
+            Ready.
         </p>
     </div>
 
     <div class="panel">
-        <h2>Daily Quest</h2>
+        <h2>Alchemy</h2>
 
-        <p>
-            Gather 500 Qi
-        </p>
+        <button onclick="craftQiPill()">
+            Craft Qi Pill
+        </button>
+
+        <button onclick="useQiPill()">
+            Use Qi Pill
+        </button>
+    </div>
+
+    <div class="panel">
+        <h2>Daily Quest</h2>
 
         <button onclick="claimQuest()">
             Claim Reward
@@ -128,25 +82,28 @@
     <div class="panel">
         <h2>Ascension</h2>
 
-        <p>
-            Rebirths:
-            <span id="rebirths">0</span>
-        </p>
-
         <button onclick="ascend()">
             Ascend
         </button>
     </div>
 
     <div class="panel">
-        <h2>Save</h2>
+        <h2>Inventory</h2>
+
+        <button onclick="showInventory()">
+            View Inventory
+        </button>
+    </div>
+
+    <div class="panel">
+        <h2>Save System</h2>
 
         <button onclick="saveGame()">
-            Save
+            Save Game
         </button>
 
         <button onclick="loadGame()">
-            Load
+            Load Game
         </button>
     </div>
 
