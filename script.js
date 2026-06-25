@@ -1262,3 +1262,460 @@ function updateAchievements(){
 // =========================
 
 updateAchievements();
+
+// =========================
+// PART 4
+// OFFLINE PROGRESS
+// TALENTS
+// CRAFTING
+// PRESTIGE
+// NPC SHOP
+// =========================
+
+// =========================
+// PLAYER EXTENSIONS
+// =========================
+
+if(!player.talentPoints)
+player.talentPoints = 0;
+
+if(!player.craftingMaterials)
+player.craftingMaterials = [];
+
+if(!player.prestigeLevel)
+player.prestigeLevel = 0;
+
+if(!player.lastSave)
+player.lastSave = Date.now();
+
+// =========================
+// TALENT TREE
+// =========================
+
+function gainTalentPoint(){
+
+    player.talentPoints++;
+
+    log(
+        "+1 Talent Point"
+    );
+
+}
+
+function learnAttackTalent(){
+
+    if(
+        player.talentPoints <= 0
+    ){
+
+        alert(
+            "No Talent Points"
+        );
+
+        return;
+    }
+
+    player.talentPoints--;
+
+    player.attack += 25;
+
+    log(
+        "Attack Talent Learned"
+    );
+
+    updateUI();
+}
+
+function learnDefenseTalent(){
+
+    if(
+        player.talentPoints <= 0
+    ){
+
+        alert(
+            "No Talent Points"
+        );
+
+        return;
+    }
+
+    player.talentPoints--;
+
+    player.defense += 25;
+
+    log(
+        "Defense Talent Learned"
+    );
+
+    updateUI();
+}
+
+// =========================
+// PRESTIGE
+// =========================
+
+function prestige(){
+
+    if(
+        player.rebirths < 5
+    ){
+
+        alert(
+            "Need 5 Rebirths"
+        );
+
+        return;
+    }
+
+    player.prestigeLevel++;
+
+    player.rebirths = 0;
+
+    player.realm = 0;
+
+    player.qi = 0;
+
+    player.attack +=
+    500 *
+    player.prestigeLevel;
+
+    player.defense +=
+    500 *
+    player.prestigeLevel;
+
+    player.hp +=
+    2000 *
+    player.prestigeLevel;
+
+    log(
+        "Prestige Level " +
+        player.prestigeLevel
+    );
+
+    updateUI();
+}
+
+// =========================
+// CRAFTING MATERIALS
+// =========================
+
+const craftingDrops = [
+
+"Spirit Herb",
+
+"Monster Core",
+
+"Soul Crystal",
+
+"Dragon Scale",
+
+"Immortal Bone"
+
+];
+
+// =========================
+// GATHER MATERIAL
+// =========================
+
+function gatherMaterial(){
+
+    const item =
+    craftingDrops[
+        Math.floor(
+            Math.random() *
+            craftingDrops.length
+        )
+    ];
+
+    player.craftingMaterials.push(
+        item
+    );
+
+    log(
+        "Obtained " +
+        item
+    );
+}
+
+// =========================
+// ADVANCED ALCHEMY
+// =========================
+
+function craftFoundationPill(){
+
+    let herbs =
+    player.craftingMaterials.filter(
+        x => x ===
+        "Spirit Herb"
+    ).length;
+
+    if(
+        herbs < 3
+    ){
+
+        alert(
+            "Need 3 Spirit Herbs"
+        );
+
+        return;
+    }
+
+    removeMaterial(
+        "Spirit Herb",
+        3
+    );
+
+    player.qi += 2000;
+
+    log(
+        "Crafted Foundation Pill"
+    );
+
+    updateUI();
+}
+
+// =========================
+// REMOVE MATERIAL
+// =========================
+
+function removeMaterial(
+    material,
+    amount
+){
+
+    let removed = 0;
+
+    player.craftingMaterials =
+    player.craftingMaterials.filter(
+    item => {
+
+        if(
+            item === material &&
+            removed < amount
+        ){
+
+            removed++;
+
+            return false;
+        }
+
+        return true;
+
+    });
+
+}
+
+// =========================
+// NPC SHOP
+// =========================
+
+function buySpiritHerb(){
+
+    if(
+        player.spiritStones < 100
+    ){
+
+        alert(
+            "Need 100 Stones"
+        );
+
+        return;
+    }
+
+    player.spiritStones -= 100;
+
+    player.craftingMaterials.push(
+        "Spirit Herb"
+    );
+
+    log(
+        "Purchased Spirit Herb"
+    );
+
+    updateUI();
+}
+
+function buyMonsterCore(){
+
+    if(
+        player.spiritStones < 200
+    ){
+
+        alert(
+            "Need 200 Stones"
+        );
+
+        return;
+    }
+
+    player.spiritStones -= 200;
+
+    player.craftingMaterials.push(
+        "Monster Core"
+    );
+
+    log(
+        "Purchased Monster Core"
+    );
+
+    updateUI();
+}
+
+// =========================
+// OFFLINE PROGRESS
+// =========================
+
+function calculateOfflineProgress(){
+
+    let now =
+    Date.now();
+
+    let seconds =
+    Math.floor(
+        (now - player.lastSave)
+        / 1000
+    );
+
+    if(seconds <= 0)
+        return;
+
+    let qiGain =
+    seconds *
+    (
+        2 +
+        player.realm +
+        player.rebirths
+    );
+
+    player.qi += qiGain;
+
+    log(
+        "Offline Cultivation +" +
+        qiGain +
+        " Qi"
+    );
+
+}
+
+// =========================
+// OVERRIDE SAVE
+// =========================
+
+const oldSave =
+saveGame;
+
+saveGame = function(){
+
+    player.lastSave =
+    Date.now();
+
+    localStorage.setItem(
+        "cultivationSave",
+        JSON.stringify(player)
+    );
+
+    log(
+        "Game Saved"
+    );
+
+};
+
+// =========================
+// OVERRIDE LOAD
+// =========================
+
+const oldLoad =
+loadGame;
+
+loadGame = function(){
+
+    let save =
+    localStorage.getItem(
+        "cultivationSave"
+    );
+
+    if(save){
+
+        player =
+        JSON.parse(save);
+
+        calculateOfflineProgress();
+
+        updateUI();
+
+        updateInventory();
+
+        updateAchievements();
+
+        log(
+            "Game Loaded"
+        );
+
+    }
+
+};
+
+// =========================
+// REALM RANKING TITLE
+// =========================
+
+function getRealmTitle(){
+
+    if(
+        player.realm < 5
+    )
+        return "Novice";
+
+    if(
+        player.realm < 10
+    )
+        return "Elite";
+
+    if(
+        player.realm < 15
+    )
+        return "Immortal";
+
+    return "Supreme Sovereign";
+}
+
+// =========================
+// AUTO MATERIAL FARM
+// =========================
+
+setInterval(()=>{
+
+    if(
+        Math.random() <
+        0.10
+    ){
+
+        gatherMaterial();
+
+    }
+
+},15000);
+
+// =========================
+// BONUS TALENT POINTS
+// =========================
+
+setInterval(()=>{
+
+    if(
+        player.level % 10 === 0
+    ){
+
+        gainTalentPoint();
+
+    }
+
+},60000);
+
+// =========================
+// FINAL INIT
+// =========================
+
+updateUI();
+updateInventory();
+updateAchievements();
